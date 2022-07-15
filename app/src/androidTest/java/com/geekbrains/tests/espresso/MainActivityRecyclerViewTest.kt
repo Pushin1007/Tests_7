@@ -96,9 +96,28 @@ class MainActivityRecyclerViewTest {
         }
     }
 
-    private fun loadList() {
+
+    //кликаем на элеиент списка.
+    //этот тест проверяет и фрагмент и recycler view, который во фрагменте
+    @Test
+    fun recyclerViewReal_Click() {
+        if (BuildConfig.TYPE != MainActivity.FAKE) {
+            loadList("go")
+            Thread.sleep(5000)
+
+            onView(withId(R.id.recyclerView))
+                .perform(
+                    RecyclerViewActions.actionOnItem<SearchResultViewHolder>(
+                        hasDescendant(withText("golang/go")),
+                        click()
+                    )
+                )
+        }
+    }
+
+    private fun loadList(str: String = "algol") {
         onView(withId(R.id.searchEditText)).perform(click())
-        onView(withId(R.id.searchEditText)).perform(replaceText("algol"), closeSoftKeyboard())
+        onView(withId(R.id.searchEditText)).perform(replaceText(str), closeSoftKeyboard())
         onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
     }
 
